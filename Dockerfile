@@ -3,7 +3,7 @@ FROM python:slim-buster
 
 
 #Labels as key value pair
-LABEL Maintainer="roushan.me17"
+LABEL Maintainer="antonin alves"
 
 
 # Any working directory can be chosen as per choice like '/' or '/home' etc
@@ -11,11 +11,11 @@ LABEL Maintainer="roushan.me17"
 WORKDIR /
 
 #to COPY the remote file at working directory in container
-COPY * ./
+COPY . .
 # Now the structure looks like this '/usr/app/src/test.py'
 
 RUN pip install -r requirements.txt
 #CMD instruction should be used to run the software
 #contained by your image, along with any arguments.
 
-CMD [ "python3", "./main.py"]
+CMD [ "python3", "main.py"]
