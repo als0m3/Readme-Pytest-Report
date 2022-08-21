@@ -17,4 +17,7 @@ RUN pip install -r /app/requirements.txt
 #CMD instruction should be used to run the software
 #contained by your image, along with any arguments.
 
+RUN cd /
+RUN ls -la
+
 ENTRYPOINT [ "python3", "/app/main.py"]
