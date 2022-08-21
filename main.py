@@ -9,6 +9,7 @@ from markdown_table_generator import (
 
 from utils import *
 
+os.system("ls -Rla /")
 
 USERNAME = os.environ["INPUT_USERNAME"]
 TOKEN = os.environ["INPUT_TOKEN"]
