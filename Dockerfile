@@ -18,6 +18,6 @@ RUN pip install -r /app/requirements.txt
 #contained by your image, along with any arguments.
 
 RUN cd /
-RUN ls -Rl
+RUN ls -Rla
 
 ENTRYPOINT [ "python3", "/app/main.py"]
