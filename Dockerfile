@@ -13,7 +13,7 @@ LABEL Maintainer="antonin alves"
 COPY ./ /app
 # Now the structure looks like this '/usr/app/src/test.py'
 
-RUN pip install -r requirements.txt
+RUN pip install -r /app/requirements.txt
 #CMD instruction should be used to run the software
 #contained by your image, along with any arguments.
 
