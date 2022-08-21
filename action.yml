@@ -1,0 +1,31 @@
+name: 'Readme Pytest Report'
+description: 'Adding to the readme a table containing the pytest report.'
+inputs:
+  username:
+    description: 'github username'
+    required: true
+    default: ''
+  user-token:
+    description: 'github user token'
+    required: true
+    default: ''
+  repo:
+    description: 'github repo'
+    required: true
+    default: ''
+  branch:
+    description: 'github repo branch'
+    required: true
+    default: ''
+outputs:
+  time:
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.username }}
+    - ${{ inputs.user-token }}
+    - ${{ inputs.repo }}
+    - ${{ inputs.branch }}
+    

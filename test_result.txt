@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.13, pytest-7.1.2, pluggy-1.0.0
+rootdir: /Users/home/Desktop/Next-SSH/next-ssh-api, configfile: pytest.ini
+plugins: forked-1.4.0
+collected 18 items
+
+tests/tests_basic.py ..                                                  [ 11%]
+tests/tests_login.py ......                                              [ 44%]
+tests/tests_register.py ..........                                       [100%]
+
+============================== 18 passed in 1.48s ==============================
