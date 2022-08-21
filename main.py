@@ -9,7 +9,7 @@ from markdown_table_generator import (
 
 from utils import *
 
-os.system("ls -Rla /")
+# os.system("ls -Rla /")
 
 USERNAME = os.environ["INPUT_USERNAME"]
 TOKEN = os.environ["INPUT_TOKEN"]
@@ -60,7 +60,7 @@ class table_data:
 
 
 def execute_pytest():
-    os.system("pytest /app/tests/* > test_result.txt")
+    os.system("pytest /github/workspace/app/tests/* > test_result.txt")
 
 
 def get_current_github_readme():
