@@ -11,7 +11,7 @@ from utils import *
 
 
 USERNAME = os.environ["INPUT_USERNAME"]
-TOKEN = os.environ["INPUT_USER_TOKEN"]
+TOKEN = os.environ["INPUT_TOKEN"]
 
 REPO = os.environ["INPUT_REPO"]
 BRANCH = os.environ["INPUT_BRANCH"]

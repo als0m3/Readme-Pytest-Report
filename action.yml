@@ -5,7 +5,7 @@ inputs:
     description: 'github username'
     required: true
     default: ''
-  user-token:
+  token:
     description: 'github user token'
     required: true
     default: ''
