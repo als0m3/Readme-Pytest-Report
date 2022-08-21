@@ -59,7 +59,7 @@ class table_data:
 
 
 def execute_pytest():
-    os.system("pytest tests/* > test_result.txt")
+    os.system("pytest /app/tests/* > test_result.txt")
 
 
 def get_current_github_readme():
