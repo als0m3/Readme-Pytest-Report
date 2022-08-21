@@ -1,14 +1,21 @@
-FROM python:3-slim AS builder
-ADD . /app
-WORKDIR /app
+#Deriving the latest base image
+FROM python:slim-buster
 
-# We are installing a dependency here directly into our app source dir
+
+#Labels as key value pair
+LABEL Maintainer="roushan.me17"
+
+
+# Any working directory can be chosen as per choice like '/' or '/home' etc
+# i have chosen /usr/app/src
+WORKDIR /
+
+#to COPY the remote file at working directory in container
+COPY * ./
+# Now the structure looks like this '/usr/app/src/test.py'
+
 RUN pip install -r requirements.txt
+#CMD instruction should be used to run the software
+#contained by your image, along with any arguments.
 
-# A distroless container image with Python and some basics like SSL certificates
-# https://github.com/GoogleContainerTools/distroless
-FROM gcr.io/distroless/python3-debian10
-COPY --from=builder /app /app
-WORKDIR /app
-ENV PYTHONPATH /app
-CMD ["/cmd/main.py"]
+CMD [ "python3", "./main.py"]
