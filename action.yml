@@ -23,9 +23,3 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.username }}
-    - ${{ inputs.user-token }}
-    - ${{ inputs.repo }}
-    - ${{ inputs.branch }}
-    
