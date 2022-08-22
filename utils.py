@@ -31,6 +31,7 @@ def coverage_badge_editor(percent):
 
 
 def pytest_report_parser(report_content):
+    print(report_content)
     tests_table = []
     general_infos = re.search(R_GENERAL_INFO, report_content).group()
     general_nbr_of_tests = general_infos.split(" ")[0]
