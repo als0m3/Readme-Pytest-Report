@@ -84,11 +84,7 @@ def edit_readme(current_readme, new_content):
         flags=re.DOTALL,
     )
 
-os.system("ls -l /github/workspace/")
-
 execute_pytest()
-
-os.system("ls -l /github/workspace/")
 
 table = table_data()
 table.get_markdown_data()

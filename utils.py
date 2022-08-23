@@ -31,27 +31,25 @@ def coverage_badge_editor(percent):
 
 
 def pytest_report_parser(report_content):
-    print(report_content)
     tests_table = []
     general_infos = re.search(R_GENERAL_INFO, report_content).group()
-    general_nbr_of_tests = general_infos.split(" ")[0]
     general_duration = general_infos.split(" ")[-1]
+    general_nbr_of_tests = 0
     general_nbr_of_success = 0
     general_nbr_of_fails = 0
 
     for test in re.findall(R_TEST, report_content):
         test_title = re.search(R_TEST_TITLE, test).group()
-        test_nbr_total = str(len(test.split(" ")[1]))
-        test_nbr_success = str(test.split(" ")[1].count("."))
-        general_nbr_of_success = str(
-            int(general_nbr_of_success) + int(test_nbr_success)
-        )
-        test_nbr_fail = str(int(test_nbr_total) - int(test_nbr_success))
-        general_nbr_of_fails = str(int(general_nbr_of_fails) + int(test_nbr_fail))
-        test_coverage_percent = int(test_nbr_success) // int(test_nbr_total) * 100
+        test_nbr_total = len(test.split(" ")[1])
+        general_nbr_of_tests += len(test.split(" ")[1])
+        test_nbr_success = test.split(" ")[1].count(".")
+        general_nbr_of_success += test.split(" ")[1].count(".")
+        test_nbr_fail = test_nbr_total - test_nbr_success
+        general_nbr_of_fails += test_nbr_total - test_nbr_success
+        test_coverage_percent = test_nbr_success // test_nbr_total * 100
 
         tests_table.append(
-            [
+            str(r) for r in [
                 test_title,
                 coverage_badge_editor(test_coverage_percent),
                 test_nbr_total,
@@ -60,15 +58,13 @@ def pytest_report_parser(report_content):
             ]
         )
 
-    general_coverage = str(
-        int(int(general_nbr_of_success) / int(general_nbr_of_tests) * 100)
-    )
+    general_coverage = general_nbr_of_success // general_nbr_of_tests * 100
     return (
-        general_nbr_of_tests,
-        general_nbr_of_success,
-        general_nbr_of_fails,
-        general_coverage,
-        general_duration,
+        str(general_nbr_of_tests),
+        str(general_nbr_of_success),
+        str(general_nbr_of_fails),
+        str(general_coverage),
+        str(general_duration),
         tests_table,
     )
 

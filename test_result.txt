@@ -1,11 +1,450 @@
 ============================= test session starts ==============================
-platform darwin -- Python 3.9.13, pytest-7.1.2, pluggy-1.0.0
-rootdir: /Users/home/Desktop/Next-SSH/next-ssh-api, configfile: pytest.ini
-plugins: forked-1.4.0
+platform linux -- Python 3.10.6, pytest-7.1.2, pluggy-1.0.0
+rootdir: /github/workspace, configfile: pytest.ini
 collected 18 items
 
 tests/tests_basic.py ..                                                  [ 11%]
-tests/tests_login.py ......                                              [ 44%]
-tests/tests_register.py ..........                                       [100%]
+tests/tests_login.py F...FF                                              [ 44%]
+tests/tests_register.py F........F                                       [100%]
 
-============================== 18 passed in 1.48s ==============================
+=================================== FAILURES ===================================
+_________________________________ test_success _________________________________
+
+client = <FlaskClient <Flask 'startup'>>
+
+    def test_success(client):
+>       response = client.post(
+            "/auth/register",
+            headers={"Content-Type": "application/json"},
+            json={"email": "user1@test.com", "username": "user1", "password": "123@LLLlll"},
+        )
+
+tests/tests_login.py:2: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1145: in post
+    return self.open(*args, **kw)
+/usr/local/lib/python3.10/site-packages/flask/testing.py:223: in open
+    response = super().open(
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1094: in open
+    response = self.run_wsgi_app(request.environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:961: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1242: in run_wsgi_app
+    app_rv = app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2548: in __call__
+    return self.wsgi_app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2528: in wsgi_app
+    response = self.handle_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:2525: in wsgi_app
+    response = self.full_dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1822: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:1820: in full_dispatch_request
+    rv = self.dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1796: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+/usr/local/lib/python3.10/site-packages/flask_guardian/validator.py:38: in wrapped
+    return f(*args, **kwargs)
+app/routes/auth/register.py:19: in register_
+    if Users.objects(email=body["email"]):
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/manager.py:38: in __get__
+    queryset = queryset_class(owner, owner._get_collection())
+/usr/local/lib/python3.10/site-packages/mongoengine/document.py:232: in _get_collection
+    if cls._meta.get("auto_create_index", True) and db.client.is_primary:
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1087: in is_primary
+    return self._server_property("is_writable")
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:859: in _server_property
+    server = self._topology.select_server(writable_server_selector)
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:272: in select_server
+    server = self._select_server(selector, server_selection_timeout, address)
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:261: in _select_server
+    servers = self.select_servers(selector, server_selection_timeout, address)
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:223: in select_servers
+    server_descriptions = self._select_servers_loop(selector, server_timeout, address)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Topology <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('lo...st', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>>
+selector = <function writable_server_selector at 0x7f9a9bce8f70>, timeout = 30
+address = None
+
+    def _select_servers_loop(self, selector, timeout, address):
+        """select_servers() guts. Hold the lock when calling this."""
+        now = time.monotonic()
+        end_time = now + timeout
+        server_descriptions = self._description.apply_selector(
+            selector, address, custom_selector=self._settings.server_selector
+        )
+    
+        while not server_descriptions:
+            # No suitable servers.
+            if timeout == 0 or now > end_time:
+>               raise ServerSelectionTimeoutError(
+                    "%s, Timeout: %ss, Topology Description: %r"
+                    % (self._error_message(selector), timeout, self.description)
+                )
+E               pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused, Timeout: 30s, Topology Description: <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>
+
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:238: ServerSelectionTimeoutError
+______________________________ test_email_invalid ______________________________
+
+client = <FlaskClient <Flask 'startup'>>
+
+    def test_email_invalid(client):
+>       response = client.post(
+            "/auth/login",
+            headers={"Content-Type": "application/json"},
+            json={"email": "user2@test.com", "password": "123@LLLlll"},
+        )
+
+tests/tests_login.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1145: in post
+    return self.open(*args, **kw)
+/usr/local/lib/python3.10/site-packages/flask/testing.py:223: in open
+    response = super().open(
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1094: in open
+    response = self.run_wsgi_app(request.environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:961: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1242: in run_wsgi_app
+    app_rv = app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2548: in __call__
+    return self.wsgi_app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2528: in wsgi_app
+    response = self.handle_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:2525: in wsgi_app
+    response = self.full_dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1822: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:1820: in full_dispatch_request
+    rv = self.dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1796: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+/usr/local/lib/python3.10/site-packages/flask_cors/decorator.py:128: in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+/usr/local/lib/python3.10/site-packages/flask_guardian/validator.py:38: in wrapped
+    return f(*args, **kwargs)
+app/routes/auth/login.py:22: in login_
+    user = Users.objects(email=body["email"]).first()
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:293: in first
+    result = queryset[0]
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:203: in __getitem__
+    queryset._cursor[key],
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:758: in __getitem__
+    for doc in clone:
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1248: in next
+    if len(self.__data) or self._refresh():
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1139: in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1712: in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1657: in __start_session
+    self._topology._check_implicit_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:538: in _check_implicit_session_support
+    self._check_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:554: in _check_session_support
+    self._select_servers_loop(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Topology <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('lo...st', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>>
+selector = <function readable_server_selector at 0x7f9a9bce8ee0>, timeout = 30
+address = None
+
+    def _select_servers_loop(self, selector, timeout, address):
+        """select_servers() guts. Hold the lock when calling this."""
+        now = time.monotonic()
+        end_time = now + timeout
+        server_descriptions = self._description.apply_selector(
+            selector, address, custom_selector=self._settings.server_selector
+        )
+    
+        while not server_descriptions:
+            # No suitable servers.
+            if timeout == 0 or now > end_time:
+>               raise ServerSelectionTimeoutError(
+                    "%s, Timeout: %ss, Topology Description: %r"
+                    % (self._error_message(selector), timeout, self.description)
+                )
+E               pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused, Timeout: 30s, Topology Description: <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>
+
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:238: ServerSelectionTimeoutError
+____________________________ test_password_invalid _____________________________
+
+client = <FlaskClient <Flask 'startup'>>
+
+    def test_password_invalid(client):
+>       response = client.post(
+            "/auth/login",
+            headers={"Content-Type": "application/json"},
+            json={"email": "user1@test.com", "password": "123LLLlll"},
+        )
+
+tests/tests_login.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1145: in post
+    return self.open(*args, **kw)
+/usr/local/lib/python3.10/site-packages/flask/testing.py:223: in open
+    response = super().open(
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1094: in open
+    response = self.run_wsgi_app(request.environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:961: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1242: in run_wsgi_app
+    app_rv = app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2548: in __call__
+    return self.wsgi_app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2528: in wsgi_app
+    response = self.handle_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:2525: in wsgi_app
+    response = self.full_dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1822: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:1820: in full_dispatch_request
+    rv = self.dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1796: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+/usr/local/lib/python3.10/site-packages/flask_cors/decorator.py:128: in wrapped_function
+    resp = make_response(f(*args, **kwargs))
+/usr/local/lib/python3.10/site-packages/flask_guardian/validator.py:38: in wrapped
+    return f(*args, **kwargs)
+app/routes/auth/login.py:22: in login_
+    user = Users.objects(email=body["email"]).first()
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:293: in first
+    result = queryset[0]
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:203: in __getitem__
+    queryset._cursor[key],
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:758: in __getitem__
+    for doc in clone:
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1248: in next
+    if len(self.__data) or self._refresh():
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1139: in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1712: in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1657: in __start_session
+    self._topology._check_implicit_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:538: in _check_implicit_session_support
+    self._check_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:554: in _check_session_support
+    self._select_servers_loop(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Topology <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('lo...st', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>>
+selector = <function readable_server_selector at 0x7f9a9bce8ee0>, timeout = 30
+address = None
+
+    def _select_servers_loop(self, selector, timeout, address):
+        """select_servers() guts. Hold the lock when calling this."""
+        now = time.monotonic()
+        end_time = now + timeout
+        server_descriptions = self._description.apply_selector(
+            selector, address, custom_selector=self._settings.server_selector
+        )
+    
+        while not server_descriptions:
+            # No suitable servers.
+            if timeout == 0 or now > end_time:
+>               raise ServerSelectionTimeoutError(
+                    "%s, Timeout: %ss, Topology Description: %r"
+                    % (self._error_message(selector), timeout, self.description)
+                )
+E               pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused, Timeout: 30s, Topology Description: <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>
+
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:238: ServerSelectionTimeoutError
+_________________________________ test_success _________________________________
+
+client = <FlaskClient <Flask 'startup'>>
+
+    def test_success(client):
+>       response = client.post(
+            "/auth/register",
+            headers={"Content-Type": "application/json"},
+            json={"email": "user1@test.com", "username": "user1", "password": "123@LLLlll"},
+        )
+
+tests/tests_register.py:2: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1145: in post
+    return self.open(*args, **kw)
+/usr/local/lib/python3.10/site-packages/flask/testing.py:223: in open
+    response = super().open(
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1094: in open
+    response = self.run_wsgi_app(request.environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:961: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1242: in run_wsgi_app
+    app_rv = app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2548: in __call__
+    return self.wsgi_app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2528: in wsgi_app
+    response = self.handle_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:2525: in wsgi_app
+    response = self.full_dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1822: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:1820: in full_dispatch_request
+    rv = self.dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1796: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+/usr/local/lib/python3.10/site-packages/flask_guardian/validator.py:38: in wrapped
+    return f(*args, **kwargs)
+app/routes/auth/register.py:19: in register_
+    if Users.objects(email=body["email"]):
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:219: in __bool__
+    return self._has_data()
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:215: in _has_data
+    return False if queryset.first() is None else True
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:293: in first
+    result = queryset[0]
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:203: in __getitem__
+    queryset._cursor[key],
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:758: in __getitem__
+    for doc in clone:
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1248: in next
+    if len(self.__data) or self._refresh():
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1139: in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1712: in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1657: in __start_session
+    self._topology._check_implicit_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:538: in _check_implicit_session_support
+    self._check_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:554: in _check_session_support
+    self._select_servers_loop(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Topology <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('lo...st', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>>
+selector = <function readable_server_selector at 0x7f9a9bce8ee0>, timeout = 30
+address = None
+
+    def _select_servers_loop(self, selector, timeout, address):
+        """select_servers() guts. Hold the lock when calling this."""
+        now = time.monotonic()
+        end_time = now + timeout
+        server_descriptions = self._description.apply_selector(
+            selector, address, custom_selector=self._settings.server_selector
+        )
+    
+        while not server_descriptions:
+            # No suitable servers.
+            if timeout == 0 or now > end_time:
+>               raise ServerSelectionTimeoutError(
+                    "%s, Timeout: %ss, Topology Description: %r"
+                    % (self._error_message(selector), timeout, self.description)
+                )
+E               pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused, Timeout: 30s, Topology Description: <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>
+
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:238: ServerSelectionTimeoutError
+_______________________________ test_email_exist _______________________________
+
+client = <FlaskClient <Flask 'startup'>>
+
+    def test_email_exist(client):
+>       client.post(
+            "/auth/register",
+            headers={"Content-Type": "application/json"},
+            json={"email": "user1@test.com", "username": "user2", "password": "11ll@@LLL"},
+        )
+
+tests/tests_register.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1145: in post
+    return self.open(*args, **kw)
+/usr/local/lib/python3.10/site-packages/flask/testing.py:223: in open
+    response = super().open(
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1094: in open
+    response = self.run_wsgi_app(request.environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:961: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+/usr/local/lib/python3.10/site-packages/werkzeug/test.py:1242: in run_wsgi_app
+    app_rv = app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2548: in __call__
+    return self.wsgi_app(environ, start_response)
+/usr/local/lib/python3.10/site-packages/flask/app.py:2528: in wsgi_app
+    response = self.handle_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:2525: in wsgi_app
+    response = self.full_dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1822: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+/usr/local/lib/python3.10/site-packages/flask_cors/extension.py:165: in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+/usr/local/lib/python3.10/site-packages/flask/app.py:1820: in full_dispatch_request
+    rv = self.dispatch_request()
+/usr/local/lib/python3.10/site-packages/flask/app.py:1796: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+/usr/local/lib/python3.10/site-packages/flask_guardian/validator.py:38: in wrapped
+    return f(*args, **kwargs)
+app/routes/auth/register.py:19: in register_
+    if Users.objects(email=body["email"]):
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:219: in __bool__
+    return self._has_data()
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:215: in _has_data
+    return False if queryset.first() is None else True
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:293: in first
+    result = queryset[0]
+/usr/local/lib/python3.10/site-packages/mongoengine/queryset/base.py:203: in __getitem__
+    queryset._cursor[key],
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:758: in __getitem__
+    for doc in clone:
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1248: in next
+    if len(self.__data) or self._refresh():
+/usr/local/lib/python3.10/site-packages/pymongo/cursor.py:1139: in _refresh
+    self.__session = self.__collection.database.client._ensure_session()
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1712: in _ensure_session
+    return self.__start_session(True, causal_consistency=False)
+/usr/local/lib/python3.10/site-packages/pymongo/mongo_client.py:1657: in __start_session
+    self._topology._check_implicit_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:538: in _check_implicit_session_support
+    self._check_session_support()
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:554: in _check_session_support
+    self._select_servers_loop(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Topology <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('lo...st', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>>
+selector = <function readable_server_selector at 0x7f9a9bce8ee0>, timeout = 30
+address = None
+
+    def _select_servers_loop(self, selector, timeout, address):
+        """select_servers() guts. Hold the lock when calling this."""
+        now = time.monotonic()
+        end_time = now + timeout
+        server_descriptions = self._description.apply_selector(
+            selector, address, custom_selector=self._settings.server_selector
+        )
+    
+        while not server_descriptions:
+            # No suitable servers.
+            if timeout == 0 or now > end_time:
+>               raise ServerSelectionTimeoutError(
+                    "%s, Timeout: %ss, Topology Description: %r"
+                    % (self._error_message(selector), timeout, self.description)
+                )
+E               pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [Errno 111] Connection refused, Timeout: 30s, Topology Description: <TopologyDescription id: 6303f313fcc29e3f59c3716b, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [Errno 111] Connection refused')>]>
+
+/usr/local/lib/python3.10/site-packages/pymongo/topology.py:238: ServerSelectionTimeoutError
+=========================== short test summary info ============================
+FAILED tests/tests_login.py::test_success - pymongo.errors.ServerSelectionTim...
+FAILED tests/tests_login.py::test_email_invalid - pymongo.errors.ServerSelect...
+FAILED tests/tests_login.py::test_password_invalid - pymongo.errors.ServerSel...
+FAILED tests/tests_register.py::test_success - pymongo.errors.ServerSelection...
+FAILED tests/tests_register.py::test_email_exist - pymongo.errors.ServerSelec...
+=================== 5 failed, 13 passed in 152.79s (0:02:32) ===================
