@@ -46,7 +46,7 @@ def pytest_report_parser(report_content):
         general_nbr_of_success += test.split(" ")[1].count(".")
         test_nbr_fail = test_nbr_total - test_nbr_success
         general_nbr_of_fails += test_nbr_total - test_nbr_success
-        test_coverage_percent = test_nbr_success // test_nbr_total * 100
+        test_coverage_percent = test_nbr_success / test_nbr_total * 100
 
         tests_table.append(
             str(r) for r in [
@@ -58,7 +58,7 @@ def pytest_report_parser(report_content):
             ]
         )
 
-    general_coverage = general_nbr_of_success // general_nbr_of_tests * 100
+    general_coverage = general_nbr_of_success / general_nbr_of_tests * 100
     return (
         str(general_nbr_of_tests),
         str(general_nbr_of_success),
