@@ -75,7 +75,7 @@ def create_readme_replacement(coverage, detailed_table, general_table):
 [Pytest Table]: <>
 
 """
-        + coverage_badge_editor(int(coverage))
+        + coverage_badge_editor(float(coverage))
         + """
 
 <details>
