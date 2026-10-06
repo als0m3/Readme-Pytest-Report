@@ -335,3 +335,6 @@ pip-selfcheck.json
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,visualstudiocode,flask,git,venv
+
+# Generated local test output
+test_result.txt
